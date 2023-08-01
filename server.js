@@ -12,6 +12,7 @@ import {
   getStorefrontHeaders,
   createCookieSessionStorage,
 } from '@shopify/remix-oxygen';
+import { createSanityClient ,PreviewSession} from 'hydrogen-sanity';
 
 /**
  * Export a fetch handler in module format.
@@ -27,9 +28,10 @@ export default {
       }
 
       const waitUntil = (p) => executionContext.waitUntil(p);
-      const [cache, session] = await Promise.all([
+      const [cache, session,previewSession] = await Promise.all([
         caches.open('hydrogen'),
         HydrogenSession.init(request, [env.SESSION_SECRET]),
+        PreviewSession.init(request, [env.SESSION_SECRET]),
       ]);
 
       /**
@@ -44,6 +46,30 @@ export default {
         storeDomain: env.PUBLIC_STORE_DOMAIN,
         storefrontId: env.PUBLIC_STOREFRONT_ID,
         storefrontHeaders: getStorefrontHeaders(request),
+      });
+      /**
+       * Create Hydrogen's  Sanity client.
+       */
+
+      const sanity = createSanityClient({
+        cache,
+        waitUntil,
+        // Optionally, pass session and token to enable live-preview
+        preview:
+          env.SANITY_PREVIEW_SECRET && env.SANITY_API_TOKEN
+            ? {
+                session: previewSession,
+                token: env.SANITY_API_TOKEN,
+              }
+            : undefined,
+        // Pass configuration options for Sanity client
+        config: {
+          projectId: env.SANITY_PROJECT_ID,
+          dataset: env.SANITY_DATASET,
+          apiVersion: env.SANITY_API_VERSION ?? '2023-03-30',
+          useCdn: process.env.NODE_ENV === 'production',
+          perspective: 'published',
+        },
       });
 
       /*
@@ -64,7 +90,7 @@ export default {
       const handleRequest = createRequestHandler({
         build: remixBuild,
         mode: process.env.NODE_ENV,
-        getLoadContext: () => ({session, storefront, env, cart}),
+        getLoadContext: () => ({session, storefront, env, cart,sanity}),
       });
 
       const response = await handleRequest(request);
