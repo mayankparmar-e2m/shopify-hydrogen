@@ -2,7 +2,7 @@ import {defer} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
-import {getPosts} from '~/utils/sanity';
+
 import { HOME_PAGE_QUERY } from '~/queries/sanity/home';
 
 export const meta = () => {
@@ -10,12 +10,7 @@ export const meta = () => {
 };
 
 export async function loader({context}) {
-  const {storefront,sanity} = context;
-  const posts = await getPosts();
-  const home= await sanity.query({
-    query:HOME_PAGE_QUERY
-  })
-  console.log(home,'homehomehomehomehome')
+  const {storefront} = context;
   const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
   const featuredCollection = collections.nodes[0];
   const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);

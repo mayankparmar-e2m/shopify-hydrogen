@@ -1,11 +1,6 @@
 import {CogIcon} from '@sanity/icons'
 import {defineType, defineField} from 'sanity'
-
 const TITLE = 'Settings'
-interface ProductOptions {
-  title: string
-}
-
 export default defineType({
   name: 'settings',
   title: TITLE,
@@ -14,12 +9,8 @@ export default defineType({
   groups: [
     {
       default: true,
-      name: 'navigation',
-      title: 'Navigation',
-    },
-    {
-      name: 'productOptions',
-      title: 'Product options',
+      name: 'general_setting',
+      title: 'General',
     },
     {
       name: 'notFoundPage',
@@ -31,47 +22,75 @@ export default defineType({
     },
   ],
   fields: [
-    // Menu
+    // site Logo
     defineField({
-      name: 'menu',
-      title: 'Menu',
-      type: 'menuSettings',
-      group: 'navigation',
+      name: 'siteLogo',
+      title: 'Site Logo',
+      type: 'siteLogo',
+      group: 'general_setting',
     }),
-    // Footer
+    // brand Information
     defineField({
       name: 'footer',
       title: 'Footer',
-      type: 'footerSettings',
-      group: 'navigation',
+      type: 'brandInformation',
+      group: 'general_setting',
+
     }),
-    // Custom product options
+    // Social Media
     defineField({
-      name: 'customProductOptions',
-      title: 'Custom product options',
-      type: 'array',
-      group: 'productOptions',
-      of: [
+      name: 'socialMedia',
+      title: 'Social Media',
+      type: 'object',
+      group: 'general_setting',
+      description:"Add a Social Media platform URL.",
+      options: { collapsible: true, collapsed: true,
+       columns:2,
+      },
+      fields:[
         {
-          name: 'customProductOption.color',
-          type: 'customProductOption.color',
+          name: 'facebook',
+          title: 'Facebook',
+          type: 'url',
         },
         {
-          name: 'customProductOption.size',
-          type: 'customProductOption.size',
+          name: 'instagram',
+          title: 'Instagram',
+          type: 'url',
         },
-      ],
-      validation: (Rule) =>
-        Rule.custom((options: ProductOptions[] | undefined) => {
-          // Each product option type must have a unique title
-          if (options) {
-            const uniqueTitles = new Set(options.map((option) => option.title))
-            if (options.length > uniqueTitles.size) {
-              return 'Each product option type must have a unique title'
-            }
-          }
-          return true
-        }),
+        {
+          name: 'pinterest',
+          title: 'Pinterest',
+          type: 'url',
+        },
+        {
+          name: 'youtube',
+          title: 'YouTube',
+          type: 'url',
+        },
+      ]
+    }),
+     // Store Header Bar
+     defineField({
+      name: 'headerBar',
+      title: 'Header Bar',
+      type: 'object',
+      group: 'general_setting',
+      options: { collapsible: true, collapsed: true,},
+      fields:[
+        {
+          name: 'title',
+          title: 'Title',
+          type: 'string',
+        },
+        {
+          name: 'url',
+          title: 'URL',
+          type: 'reference',
+          weak: true,
+          to: [{type: 'collection'}],
+        },
+      ]
     }),
     // Not found page
     defineField({

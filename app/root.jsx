@@ -17,12 +17,28 @@ import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
+import { HEADER_QUERY } from './queries/shopify/navigation';
+import { SANITY_HEADER_QUERY } from './queries/sanity/header';
 
 export function links() {
   return [
     {rel: 'stylesheet', href: tailwindCss},
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
+    {
+      rel:"preconnect",
+      href:"https://fonts.googleapis.com"
+    },
+    {
+      rel:"preconnect",
+      href:"https://fonts.gstatic.com",
+      
+    },
+    {
+      rel:"stylesheet",
+      href:"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,700&display=swap",
+      
+    },
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -36,7 +52,10 @@ export function links() {
 }
 
 export async function loader({context}) {
-  const {storefront, session, cart} = context;
+  const {storefront, session, cart,apollo,sanity} = context;
+  const headerBar=await sanity.query({
+    query:SANITY_HEADER_QUERY
+  })
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
 
@@ -50,26 +69,26 @@ export async function loader({context}) {
   const cartPromise = cart.get();
 
   // defer the footer query (below the fold)
-  const footerPromise = storefront.query(FOOTER_QUERY, {
-    cache: storefront.CacheLong(),
-    variables: {
-      footerMenuHandle: 'footer', // Adjust to your footer menu handle
-    },
-  });
+  // const footerPromise = storefront.query(FOOTER_QUERY, {
+  //   cache: storefront.CacheLong(),
+  //   variables: {
+  //     footerMenuHandle: 'footer', // Adjust to your footer menu handle
+  //   },
+  // });
 
   // await the header query (above the fold)
-  const headerPromise = storefront.query(HEADER_QUERY, {
+  const headerPromise = apollo.query( {
     cache: storefront.CacheLong(),
+    query:HEADER_QUERY,
     variables: {
       headerMenuHandle: 'main-menu', // Adjust to your header menu handle
     },
   });
-
   return defer(
     {
       cart: cartPromise,
-      footer: footerPromise,
       header: await headerPromise,
+      headerBar,
       isLoggedIn,
       publicStoreDomain,
     },
@@ -79,7 +98,7 @@ export async function loader({context}) {
 
 export default function App() {
   const data = useLoaderData();
-
+  console.log(data,'datadata')
   return (
     <html lang="en">
       <head>
@@ -90,7 +109,7 @@ export default function App() {
       </head>
       <body>
         <Layout {...data}>
-          <Outlet />
+        <Outlet />
         </Layout>
         <ScrollRestoration />
         <Scripts />
@@ -121,7 +140,7 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-        <Layout {...root.data}>
+      
           <div className="route-error">
             <h1>Oops</h1>
             <h2>{errorStatus}</h2>
@@ -131,27 +150,13 @@ export function ErrorBoundary() {
               </fieldset>
             )}
           </div>
-        </Layout>
+     
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
   );
 }
-
-/**
- * Validates the customer access token and returns a boolean and headers
- * @see https://shopify.dev/docs/api/storefront/latest/objects/CustomerAccessToken
- *
- * @example
- * ```ts
- * //
- * const {isLoggedIn, headers} = await validateCustomerAccessToken(
- *  customerAccessToken,
- *  session,
- *  );
- *  ```
- *  */
 async function validateCustomerAccessToken(customerAccessToken, session) {
   let isLoggedIn = false;
   const headers = new Headers();
@@ -170,73 +175,3 @@ async function validateCustomerAccessToken(customerAccessToken, session) {
 
   return {isLoggedIn, headers};
 }
-
-const MENU_FRAGMENT = `#graphql
-  fragment MenuItem on MenuItem {
-    id
-    resourceId
-    tags
-    title
-    type
-    url
-  }
-  fragment ChildMenuItem on MenuItem {
-    ...MenuItem
-  }
-  fragment ParentMenuItem on MenuItem {
-    ...MenuItem
-    items {
-      ...ChildMenuItem
-    }
-  }
-  fragment Menu on Menu {
-    id
-    items {
-      ...ParentMenuItem
-    }
-  }
-`;
-
-const HEADER_QUERY = `#graphql
-  fragment Shop on Shop {
-    id
-    name
-    description
-    primaryDomain {
-      url
-    }
-    brand {
-      logo {
-        image {
-          url
-        }
-      }
-    }
-  }
-  query Header(
-    $country: CountryCode
-    $headerMenuHandle: String!
-    $language: LanguageCode
-  ) @inContext(language: $language, country: $country) {
-    shop {
-      ...Shop
-    }
-    menu(handle: $headerMenuHandle) {
-      ...Menu
-    }
-  }
-  ${MENU_FRAGMENT}
-`;
-
-const FOOTER_QUERY = `#graphql
-  query Footer(
-    $country: CountryCode
-    $footerMenuHandle: String!
-    $language: LanguageCode
-  ) @inContext(language: $language, country: $country) {
-    menu(handle: $footerMenuHandle) {
-      ...Menu
-    }
-  }
-  ${MENU_FRAGMENT}
-`;
