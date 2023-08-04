@@ -1,4 +1,7 @@
 // Virtual entry point for the app
+import {ApolloClient, InMemoryCache, createHttpLink} from '@apollo/client';
+import {setContext} from '@apollo/client/link/context';
+
 import * as remixBuild from '@remix-run/dev/server-build';
 import {
   cartGetIdDefault,
@@ -12,7 +15,7 @@ import {
   getStorefrontHeaders,
   createCookieSessionStorage,
 } from '@shopify/remix-oxygen';
-import { createSanityClient ,PreviewSession} from 'hydrogen-sanity';
+import {createSanityClient, PreviewSession} from 'hydrogen-sanity';
 
 /**
  * Export a fetch handler in module format.
@@ -28,7 +31,7 @@ export default {
       }
 
       const waitUntil = (p) => executionContext.waitUntil(p);
-      const [cache, session,previewSession] = await Promise.all([
+      const [cache, session, previewSession] = await Promise.all([
         caches.open('hydrogen'),
         HydrogenSession.init(request, [env.SESSION_SECRET]),
         PreviewSession.init(request, [env.SESSION_SECRET]),
@@ -47,10 +50,19 @@ export default {
         storefrontId: env.PUBLIC_STOREFRONT_ID,
         storefrontHeaders: getStorefrontHeaders(request),
       });
+      const httpLink = createHttpLink({uri:`https://${env.PUBLIC_STORE_DOMAIN}/api/${env.PUBLIC_STOREFRONT_API_VERSION}/graphql.json`});
+      const middlewareLink = setContext(() => ({
+        headers: {
+          'X-Shopify-Storefront-Access-Token': env.PUBLIC_STOREFRONT_API_TOKEN,
+        },
+      }));
+      const apollo = new ApolloClient({
+        link: middlewareLink.concat(httpLink),
+        cache: new InMemoryCache(),
+      });
       /**
        * Create Hydrogen's  Sanity client.
        */
-
       const sanity = createSanityClient({
         cache,
         waitUntil,
@@ -90,7 +102,14 @@ export default {
       const handleRequest = createRequestHandler({
         build: remixBuild,
         mode: process.env.NODE_ENV,
-        getLoadContext: () => ({session, storefront, env, cart,sanity}),
+        getLoadContext: () => ({
+          session,
+          storefront,
+          env,
+          cart,
+          sanity,
+          apollo,
+        }),
       });
 
       const response = await handleRequest(request);

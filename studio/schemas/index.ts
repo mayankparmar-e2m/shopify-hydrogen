@@ -81,7 +81,11 @@ import shopifyProductVariant from './objects/shopify/shopifyProductVariant'
 // Collections
 import collectionGroup from './objects/collection/group'
 import collectionLinks from './objects/collection/links'
-
+// site general setting start
+// site logo
+import sitelogo from './objects/settings/sitelogo'
+//site brand information
+import brandInformationFooter from './objects/settings/brandInformationFooter'
 const objects = [
   customProductOptionColor,
   customProductOptionColorObject,
@@ -130,6 +134,10 @@ const objects = [
   shopifyProductVariant,
   collectionGroup,
   collectionLinks,
+  //site settings : site logo
+  sitelogo,
+  //site settings : site Brand Information
+  brandInformationFooter
 ]
 
 export const schemaTypes = [...annotations, ...singletons, ...objects, ...blocks, ...documents]
