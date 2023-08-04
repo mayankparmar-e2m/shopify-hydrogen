@@ -53,9 +53,6 @@ export function links() {
 
 export async function loader({context}) {
   const {storefront, session, cart,apollo,sanity} = context;
-  const headerBar=await sanity.query({
-    query:SANITY_HEADER_QUERY
-  })
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
 
@@ -77,18 +74,24 @@ export async function loader({context}) {
   // });
 
   // await the header query (above the fold)
-  const headerPromise = apollo.query( {
+  const headerPromise = await apollo.query( {
     cache: storefront.CacheLong(),
     query:HEADER_QUERY,
     variables: {
       headerMenuHandle: 'main-menu', // Adjust to your header menu handle
     },
   });
+
+  const headerBar=await sanity.query({
+    query:SANITY_HEADER_QUERY
+  })
+  const header={
+    ...headerPromise,...headerBar
+  }
   return defer(
     {
       cart: cartPromise,
-      header: await headerPromise,
-      headerBar,
+      header: header,
       isLoggedIn,
       publicStoreDomain,
     },
@@ -98,7 +101,6 @@ export async function loader({context}) {
 
 export default function App() {
   const data = useLoaderData();
-  console.log(data,'datadata')
   return (
     <html lang="en">
       <head>

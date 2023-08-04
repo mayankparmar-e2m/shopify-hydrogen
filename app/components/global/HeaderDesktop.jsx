@@ -1,16 +1,28 @@
 import {Await, Link, NavLink, useMatches} from '@remix-run/react';
-import SanityImage from './global/SanityImage';
-export function Header({header, isLoggedIn, cart,headerBar}) {
+import SanityImage from './SanityImage';
+import { AccountIcon, SearchIcon ,CartIcon} from './Icons';
+export function HeaderDesktop({header, isLoggedIn, cart}) {
   const {menu, shop} = header.data;
   const {items} = menu;
-  console.log(headerBar, 'menumenu');
   return (
-    <header className="header">
-      <div className='header-logo'>
-        <div className='logo'>
+    <div className="disk-header-wrapper block  max-md:hidden">
+      <div className='container mx-auto'>
+      <div className='header-logo flex items-center w-full mt-5'>
+        <div className='logo  max-w-[120px] w-1/2 ml-auto -mr-[60px]'>
           <Link to={"/"}>
-          <SanityImage     src={headerBar.siteLogo.desk_logo.asset._ref}/>
+          <SanityImage     src={header.siteLogo.desk_logo.asset._ref}/>
           </Link>
+        </div>
+        <div className='header-icon-wrapper flex items-center w-1/2 justify-end'>
+          <div className='search-icon cursor-pointer'>
+            <SearchIcon/>
+          </div>
+          <div className='account-icon cursor-pointer mx-9'>
+            <AccountIcon/>
+          </div>
+          <div className='cart-icon cursor-pointer'>
+            <CartIcon/>
+          </div>
         </div>
       </div>
       <nav className="header-menu ">
@@ -41,7 +53,9 @@ export function Header({header, isLoggedIn, cart,headerBar}) {
           })}
         </ul>
       </nav>
-    </header>
+      </div>
+    
+    </div>
   );
 }
 function ChildNav({childNavItems, shopUrl}) {

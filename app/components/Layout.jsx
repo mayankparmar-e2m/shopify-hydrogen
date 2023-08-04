@@ -1,5 +1,5 @@
 
-import {Header} from '~/components/Header';
+import {Header} from '~/components/global/Header';
 
 export function Layout({cart, children = null, footer, header, isLoggedIn,headerBar}) {
     return (
