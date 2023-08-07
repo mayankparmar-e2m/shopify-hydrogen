@@ -1,6 +1,6 @@
 import {Await, Link, NavLink, useMatches} from '@remix-run/react';
-import SanityImage from './SanityImage';
-import { AccountIcon, SearchIcon ,CartIcon} from './Icons';
+import SanityImage from '../SanityImage';
+import { AccountIcon, SearchIcon ,CartIcon} from '../Icons';
 export function HeaderDesktop({header, isLoggedIn, cart}) {
   const {menu, shop} = header.data;
   const {items} = menu;

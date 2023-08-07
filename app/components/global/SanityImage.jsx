@@ -79,6 +79,7 @@ export default function SanityImage(props) {
     sizes,
     src,
     width,
+    noSrcSet=false,
     ...rest
   } = props;
 
@@ -141,9 +142,9 @@ export default function SanityImage(props) {
       {...rest}
       decoding="async"
       // src={blurDataURL}
-      sizes={srcSetSizes}
+      sizes={noSrcSet?"":srcSetSizes}
       src={urlDefault}
-      srcSet={srcSet}
+      srcSet={noSrcSet?"":srcSet}
       style={{
         ...(layout === 'fill' && {
           bottom: 0,

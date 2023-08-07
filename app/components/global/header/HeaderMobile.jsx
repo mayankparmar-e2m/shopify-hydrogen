@@ -1,6 +1,6 @@
 import { Link, useHref } from "@remix-run/react";
-import { CartIcon, MobileDrawerIcon } from "./Icons";
-import SanityImage from "./SanityImage";
+import { CartIcon, MobileDrawerIcon } from "../Icons";
+import SanityImage from "../SanityImage";
 import { useEffect, useState } from "react";
 import HeaderMobileDrawer from "./HeaderMobileDrawer";
 import { overFlowHidden } from "~/utils/utils";

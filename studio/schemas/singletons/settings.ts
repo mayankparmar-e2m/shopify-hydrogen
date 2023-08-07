@@ -92,6 +92,18 @@ export default defineType({
         },
       ]
     }),
+    defineField({
+      name: 'footerIcons',
+      title: 'footer Icons',
+      type: 'array',
+      group: 'general_setting',
+      of:[
+        {
+          type:"footerIcons"
+        }
+      ]
+      
+    }),
     // Not found page
     defineField({
       name: 'notFoundPage',

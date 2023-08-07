@@ -17,8 +17,9 @@ import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
-import { HEADER_QUERY } from './queries/shopify/navigation';
+import {  NAVIGATION_QUERY } from './queries/shopify/navigation';
 import { SANITY_HEADER_QUERY } from './queries/sanity/header';
+import { SANITY_FOOTER_QUERY } from './queries/sanity/footer';
 
 export function links() {
   return [
@@ -55,7 +56,6 @@ export async function loader({context}) {
   const {storefront, session, cart,apollo,sanity} = context;
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
-
   // validate the customer access token is valid
   const {isLoggedIn, headers} = await validateCustomerAccessToken(
     customerAccessToken,
@@ -64,19 +64,10 @@ export async function loader({context}) {
 
   // defer the cart query by not awaiting it
   const cartPromise = cart.get();
-
-  // defer the footer query (below the fold)
-  // const footerPromise = storefront.query(FOOTER_QUERY, {
-  //   cache: storefront.CacheLong(),
-  //   variables: {
-  //     footerMenuHandle: 'footer', // Adjust to your footer menu handle
-  //   },
-  // });
-
   // await the header query (above the fold)
   const headerPromise = await apollo.query( {
     cache: storefront.CacheLong(),
-    query:HEADER_QUERY,
+    query:NAVIGATION_QUERY,
     variables: {
       headerMenuHandle: 'main-menu', // Adjust to your header menu handle
     },
@@ -84,7 +75,19 @@ export async function loader({context}) {
 
   const headerBar=await sanity.query({
     query:SANITY_HEADER_QUERY
-  })
+  }) 
+  // footer QUERY
+  const siteFooter=Promise.all([
+    sanity.query({query:SANITY_FOOTER_QUERY}), apollo.query({
+      cache: storefront.CacheLong(),
+      query:NAVIGATION_QUERY,
+      variables: {
+        headerMenuHandle: 'footer', // Adjust to your header menu handle
+      },
+    })
+  ])
+  
+ 
   const header={
     ...headerPromise,...headerBar
   }
@@ -93,6 +96,7 @@ export async function loader({context}) {
       cart: cartPromise,
       header: header,
       isLoggedIn,
+      siteFooter, // shopify shop footer query
       publicStoreDomain,
     },
     {headers},
