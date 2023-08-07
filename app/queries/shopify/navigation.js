@@ -8,7 +8,7 @@ export const MENUS_ITEMS = gql`
     url
   }
 `;
-export const HEADER_QUERY = gql`
+export const NAVIGATION_QUERY = gql`
    ${MENUS_ITEMS}
    query layoutMenus(
     $country: CountryCode
@@ -35,4 +35,3 @@ export const HEADER_QUERY = gql`
   }
 }
 `;
-

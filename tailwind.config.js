@@ -13,7 +13,9 @@ export default {
         accent:"#222727",
         blue:"#54C9CC",
         mobile_backDrop_color:"rgba(0, 0, 0, 0.54)",
-        headerBar_bgColor:"#54C9CC"
+        headerBar_bgColor:"#54C9CC",
+        newlatter_border_color:"#DED9C6",
+        color_beige:"#F9F9F5"
       },
       keyframes:{
         fadeInLeft:{

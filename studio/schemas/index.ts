@@ -86,6 +86,8 @@ import collectionLinks from './objects/collection/links'
 import sitelogo from './objects/settings/sitelogo'
 //site brand information
 import brandInformationFooter from './objects/settings/brandInformationFooter'
+// global image type
+import footerIcons from './objects/global/footerIcons'
 const objects = [
   customProductOptionColor,
   customProductOptionColorObject,
@@ -137,7 +139,9 @@ const objects = [
   //site settings : site logo
   sitelogo,
   //site settings : site Brand Information
-  brandInformationFooter
+  brandInformationFooter,
+  //footerIcons image
+  footerIcons
 ]
 
 export const schemaTypes = [...annotations, ...singletons, ...objects, ...blocks, ...documents]

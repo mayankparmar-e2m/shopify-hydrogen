@@ -1,5 +1,5 @@
 import {Link} from '@remix-run/react';
-import {CloseIcon, MinusIcon, PlusIcon, SearchIcon} from './Icons';
+import {CloseIcon, MinusIcon, PlusIcon, SearchIcon} from '../Icons';
 import {useState} from 'react';
 
 export default function HeaderMobileDrawer({
