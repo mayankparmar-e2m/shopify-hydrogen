@@ -1,134 +1,71 @@
 import {defer} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link} from '@remix-run/react';
-import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
-
-import { HOME_PAGE_QUERY } from '~/queries/sanity/home';
+import { Await, useLoaderData} from '@remix-run/react';
+import HomeHeroSlider from '~/components/pages/home/HomeHeroSlider';
+import { HERO_SLIDER } from '~/queries/sanity/sections/home/heroSlider';
+import { Suspense } from 'react';
+import HomeFeaturedCollection from '~/components/pages/home/HomeFeaturedCollection';
+import { FEATURED_COLLECTIONS } from '~/queries/sanity/sections/home/featuredCollection';
+import { PRODUCT_SNIPET_QUERY } from '~/queries/shopify/productSnipet';
 
 export const meta = () => {
   return [{title: `E2M | Home`}];
 };
 
 export async function loader({context}) {
-  const {storefront} = context;
-  const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
-  const featuredCollection = collections.nodes[0];
-  const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
-
-  return defer({featuredCollection, recommendedProducts});
+  const {sanity,apollo} = context;
+  const heroSection=await sanity.query({
+    query:HERO_SLIDER
+  }) 
+  // feature collection section start
+  const {featureColloections:featureColloectionsTitle}=await sanity.query({
+      query:FEATURED_COLLECTIONS
+    }) 
+   
+  const featureColloectionsdata= Promise.all(featureColloectionsTitle.data.map(async(item)=>{
+    return{ 
+      title:item.title,
+      data:await  apollo.query( {
+          query:PRODUCT_SNIPET_QUERY,
+          variables: {
+              handle: item.urlData.store.slug.current,
+              maxProduct:10
+          },
+        })
+        
+    }
+  }))
+  // feature collection section end
+  return defer({heroSection,featureColloectionsdata,featureColloectionsTitle});
 }
 
 export default function Homepage() {
-  const data = useLoaderData();
+  const {heroSection,featureColloectionsdata ,featureColloectionsTitle} = useLoaderData();
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
-    </div>
-  );
-}
+      
+      {/* home hero slider section start */}
+       <HomeHeroSlider heroSlider={heroSection.hero}/>
+         {/* home hero slider section end */}
 
-function FeaturedCollection({collection}) {
-  const image = collection.image;
-  return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
-  );
-}
-
-function RecommendedProducts({products}) {
-  return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {({products}) => (
-            <div className="recommended-products-grid">
-              {products.nodes.map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
-                  />
-                  <h4>{product.title}</h4>
-                  <small>
-                    <Money data={product.priceRange.minVariantPrice} />
-                  </small>
-                </Link>
-              ))}
-            </div>
-          )}
+      {/* feature collection section start */}
+        <Suspense fallback={<h1>Loading....</h1>}>
+        <Await resolve={featureColloectionsdata}>
+          {(featureColloectionsdata) =>  {
+            const sectionData={
+              data:featureColloectionsdata,
+              title:featureColloectionsTitle.title
+            }
+           return  <HomeFeaturedCollection section={sectionData}/>
+          }}
         </Await>
-      </Suspense>
-      <br />
+        </Suspense> 
+        {/* feature collection section end */}
     </div>
   );
 }
 
-const FEATURED_COLLECTION_QUERY = `#graphql
-  fragment FeaturedCollection on Collection {
-    id
-    title
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-    handle
-  }
-  query FeaturedCollection($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...FeaturedCollection
-      }
-    }
-  }
-`;
-
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
-    id
-    title
-    handle
-    priceRange {
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    images(first: 1) {
-      nodes {
-        id
-        url
-        altText
-        width
-        height
-      }
-    }
-  }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...RecommendedProduct
-      }
-    }
-  }
-`;
+export  function links() {
+  return [
+    {rel: 'stylesheet', href: "https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"},
+  ]
+}

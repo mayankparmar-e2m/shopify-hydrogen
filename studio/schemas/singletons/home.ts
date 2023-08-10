@@ -27,6 +27,25 @@ export default defineField({
       type: 'hero.home',
       group: 'editorial',
     }),
+    defineField({
+      name: 'featureCollections',
+      title: 'Feature Colloections',
+      type:"object",
+      group: 'editorial',
+      fields:[
+        {
+          type:"string",
+          name:"title",
+          title:"Section Title"
+        },
+        {
+          type: 'featureCollections',
+          name:"featureCollectionsData",
+
+        }
+      ],
+      
+    }),
     // Modules
     defineField({
       name: 'modules',

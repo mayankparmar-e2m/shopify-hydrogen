@@ -11,7 +11,7 @@ export default defineField({
   title: 'Product',
   name: 'annotationProduct',
   type: 'object',
-  icon: TagIcon,
+  //icon: TagIcon,
   components: {
     annotation: (props) => (
       <span>

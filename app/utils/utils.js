@@ -55,6 +55,9 @@ export const sanityReferenceToUrl=({_type,store})=>{
         case "collection":
           childRoute="collections"
           break;
+          case "product":
+            childRoute="products"
+            break;
         default:
           break;
       }

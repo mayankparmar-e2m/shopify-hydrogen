@@ -26,7 +26,7 @@ export function HeaderDesktop({header, isLoggedIn, cart}) {
         </div>
       </div>
       <nav className="header-menu ">
-        <ul className="header-menu-list flex items-center justify-center mt-6 mb-5">
+        <ul className="header-menu-list flex items-center justify-center mt-6 mb-2">
           {items?.map((navItem) => {
             if (!navItem.url) return null;
             const url = navItem.url.replace(shop.primaryDomain.url, '');

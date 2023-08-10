@@ -77,7 +77,7 @@ import shopifyCollection from './objects/shopify/shopifyCollection'
 import shopifyCollectionRule from './objects/shopify/shopifyCollectionRule'
 import shopifyProduct from './objects/shopify/shopifyProduct'
 import shopifyProductVariant from './objects/shopify/shopifyProductVariant'
-
+import herosection from './objects/hero/herosection'
 // Collections
 import collectionGroup from './objects/collection/group'
 import collectionLinks from './objects/collection/links'
@@ -88,7 +88,11 @@ import sitelogo from './objects/settings/sitelogo'
 import brandInformationFooter from './objects/settings/brandInformationFooter'
 // global image type
 import footerIcons from './objects/global/footerIcons'
+import fearureCollection from './objects/global/fearureCollection'
+import featureCollectionObj from './objects/global/featureCollectionObj'
 const objects = [
+  fearureCollection,
+  featureCollectionObj,
   customProductOptionColor,
   customProductOptionColorObject,
   customProductOptionSize,
@@ -141,7 +145,8 @@ const objects = [
   //site settings : site Brand Information
   brandInformationFooter,
   //footerIcons image
-  footerIcons
+  footerIcons,
+  herosection
 ]
 
 export const schemaTypes = [...annotations, ...singletons, ...objects, ...blocks, ...documents]

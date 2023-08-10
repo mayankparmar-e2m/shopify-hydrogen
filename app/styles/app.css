@@ -23,3 +23,7 @@ visibility: hidden;
   visibility: visible;
   transition: all linear .5s;
   }
+.feature_title{
+
+  transition: all 0.2s ease-in-out;
+}

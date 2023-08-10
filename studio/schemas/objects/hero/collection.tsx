@@ -10,7 +10,6 @@ export default defineField({
       name: 'title',
       title: 'Title',
       type: 'text',
-      rows: 3,
     }),
     // Description
     defineField({

@@ -112,6 +112,12 @@ export default defineField({
       title: 'Vendor',
       type: 'string',
     }),
+    defineField({
+      fieldset: 'organization',
+      name: 'collections',
+      title: 'collections',
+      type: 'string',
+    }),
     // Tags
     defineField({
       fieldset: 'organization',
