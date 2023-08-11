@@ -1,8 +1,8 @@
-import {useLocation} from '@remix-run/react';
-import {useMemo} from 'react';
+import { useLocation } from '@remix-run/react';
+import { useMemo } from 'react';
 
 export function useVariantUrl(handle, selectedOptions) {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   return useMemo(() => {
     return getVariantUrl({
@@ -36,32 +36,39 @@ export function getVariantUrl({
   return path + (searchString ? '?' + searchParams.toString() : '');
 }
 // add overflow-hidden global class in selected section ex. section = body,.className,#IdName;add=true/false 
-export const overFlowHidden=(section,add)=>{
-  const selectedSection=document.querySelector(`${section}`)
-  if(selectedSection){
-    if(add){
+export const overFlowHidden = (section, add) => {
+  const selectedSection = document.querySelector(`${section}`)
+  if (selectedSection) {
+    if (add) {
       selectedSection.classList.add("overflow-hidden")
-    }else{
+    } else {
       selectedSection.classList.remove("overflow-hidden")
     }
-   
+
   }
 
 }
-export const sanityReferenceToUrl=({_type,store})=>{
-   const handle=store?.slug?.current;
-   let childRoute; 
-      switch (_type) {
-        case "collection":
-          childRoute="collections"
-          break;
-          case "product":
-            childRoute="products"
-            break;
-        default:
-          break;
-      }
-      if(handle && childRoute){
-        return `/${childRoute}/${handle}`
-      }
+export const sanityReferenceToUrl = ({ _type, store }) => {
+  const handle = store?.slug?.current;
+  let childRoute;
+  switch (_type) {
+    case "collection":
+      childRoute = "collections"
+      break;
+    case "product":
+      childRoute = "products"
+      break;
+    case "home":
+      childRoute = "home"
+      break;
+    default:
+      break;
+  }
+  if (childRoute == "home") {
+    return `/`
+  } else {
+    if (handle && childRoute) {
+      return `/${childRoute}/${handle}`
+    }
+  }
 }

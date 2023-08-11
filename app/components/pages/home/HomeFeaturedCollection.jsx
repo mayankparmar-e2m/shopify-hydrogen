@@ -15,7 +15,7 @@ export default function HomeFeaturedCollection({section}) {
             return (
               <div
                 className="feature-collection__tab relative cursor-pointer"
-                key={tab.data.data.collection.id}
+                key={tab.data.data.collection?.id || index}
                 onClick={() => setActiveCollectionIndex(index)}
               >
                 <p

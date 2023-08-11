@@ -1,5 +1,6 @@
 import {HomeIcon} from '@sanity/icons'
 import {defineField} from 'sanity'
+import { PAGE_REFERENCES } from '../../constants'
 
 const TITLE = 'Home'
 
@@ -44,6 +45,64 @@ export default defineField({
 
         }
       ],
+      
+    }),
+    defineField({
+      name: 'homeCollectionList',
+      title: 'Collection list',
+      type:"array",
+      group: 'editorial',
+      of:[
+        {
+          type:"collectionList"
+        }
+      ]
+      
+    }),
+    defineField({
+      name: 'homeWhoWeAre',
+      title: 'Who We Are Section',
+      type:"object",
+      group: 'editorial',
+      fields:[
+         {
+          type:"string",
+          name:"title",
+          title:"Title"
+         },
+         {
+          type:"string",
+          name:"ctaLabel",
+          title:"CTA Button Label"
+         },
+         {
+          type: 'reference',
+          weak: true,
+          validation: (Rule) => Rule.required(),
+          to: PAGE_REFERENCES,
+          title:"CTA Button URL",
+          name:"ctaUrl"
+         },
+         {
+          type: 'array',
+          title:"Select Who We Are Data",
+          name:"data",
+          of:[
+            {
+              type:"whoWeAreData"
+            }
+          ]
+         }
+      
+      ]
+      
+    }),
+    defineField({
+      name: 'homeImageWithText',
+      title: 'Home Image With Text',
+      type:"imageWithText",
+      group: 'editorial',
+
       
     }),
     // Modules

@@ -2,7 +2,7 @@
 
 import imageUrlBuilder from '@sanity/image-url';
 
-const BREAKPOINTS = [640, 768, 1024, 1280, 1536]; // px
+const BREAKPOINTS = [180, 320, 360, 380, 480, 640, 768, 1024, 1280, 1536]; // px
 
 // @ts-expect-error
 export const findLastNonNullValue = (items, currentIndex) => {
@@ -68,18 +68,18 @@ export default function SanityImage(props) {
   const {
     // blurDataURL,
     crop,
-    dataset="production",
+    dataset = 'production',
     height,
     hotspot,
     layout,
     objectFit,
     options,
-    projectId="bziept29",
+    projectId = 'bziept29',
     quality = 80,
     sizes,
     src,
     width,
-    noSrcSet=false,
+    noSrcSet = false,
     ...rest
   } = props;
 
@@ -142,9 +142,9 @@ export default function SanityImage(props) {
       {...rest}
       decoding="async"
       // src={blurDataURL}
-      sizes={noSrcSet?"":srcSetSizes}
+      sizes={noSrcSet ? '' : srcSetSizes}
       src={urlDefault}
-      srcSet={noSrcSet?"":srcSet}
+      srcSet={noSrcSet ? '' : srcSet}
       style={{
         ...(layout === 'fill' && {
           bottom: 0,

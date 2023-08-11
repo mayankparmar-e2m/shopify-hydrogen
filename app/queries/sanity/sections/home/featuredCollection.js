@@ -1,9 +1,9 @@
 import groq from "groq";
-export const FEATURED_COLLECTIONS =groq`
+export const FEATURED_COLLECTIONS = groq`
 *[_type == 'home'] | order(_updatedAt desc) [0]{
-   featureColloections{
+  featureCollections{
     title,
-   "data":featureCollections[]{
+   "data":featureCollectionsData[]{
      title,
      "urlData":reference->{
       "type": _type,

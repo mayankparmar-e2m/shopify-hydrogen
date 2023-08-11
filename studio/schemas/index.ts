@@ -90,7 +90,13 @@ import brandInformationFooter from './objects/settings/brandInformationFooter'
 import footerIcons from './objects/global/footerIcons'
 import fearureCollection from './objects/global/fearureCollection'
 import featureCollectionObj from './objects/global/featureCollectionObj'
+import collectionList from './objects/global/collectionList'
+import whoweAre from './objects/global/whoweAre';
+import imageWithText from './objects/global/imageWithText'
 const objects = [
+  imageWithText,
+  whoweAre,
+  collectionList,
   fearureCollection,
   featureCollectionObj,
   customProductOptionColor,

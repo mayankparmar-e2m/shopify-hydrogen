@@ -2,9 +2,8 @@
 import {Swiper, SwiperSlide} from 'swiper/react';
 // import required modules
 import {Pagination} from 'swiper/modules';
-import {Link} from '@remix-run/react';
-import {sanityReferenceToUrl} from '~/utils/utils';
 import SanityImage from '~/components/global/SanityImage';
+import SanityLink from '~/components/global/SanityLinks';
 export default function HomeHeroSlider({heroSlider}) {
   return (
     <section id="shopify-section-temmplate-home_slider">
@@ -19,10 +18,6 @@ export default function HomeHeroSlider({heroSlider}) {
       >
         {heroSlider.map((slider, index) => {
           const {links} = slider;
-          const url = sanityReferenceToUrl({
-            type: links.reference._type,
-            store: links.reference.store,
-          });
           const btnLabel = links.title;
           return (
             <SwiperSlide key={index}>
@@ -32,6 +27,7 @@ export default function HomeHeroSlider({heroSlider}) {
                     src={slider.desk_image.asset._ref}
                     alt={'home banner image'}
                     className="h-full hidden md:block"
+                    layout="responsive"
                   />
                   <SanityImage
                     src={slider.mob_image.asset._ref}
@@ -48,12 +44,12 @@ export default function HomeHeroSlider({heroSlider}) {
                   <h5 className="title font-normal text-primary text-[28px] md:text-[32px] mt-4 mb-9">
                     {slider.title}
                   </h5>
-                  <Link
-                    to={url}
+                  <SanityLink
+                    data={links.reference}
                     className={`block border-0 max-w-[143px] mx-auto md:ml-0 py-4 px-8 uppercase rounded-sm text-center w-full bg-secondary text-white text-sm font-medium`}
                   >
                     {btnLabel}
-                  </Link>
+                  </SanityLink>
                 </div>
               </div>
             </SwiperSlide>

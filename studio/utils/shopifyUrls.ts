@@ -20,3 +20,9 @@ export const productVariantUrl = (productId: number, productVariantId: number) =
   }
   return `https://${SHOPIFY_STORE_ID}/admin/products/${productId}/variants/${productVariantId}`
 }
+export const pageUrl = (pageId: number) => {
+  if (!SHOPIFY_STORE_ID) {
+    return null
+  }
+  return `https://${SHOPIFY_STORE_ID}/admin/pages/${pageId}`
+}

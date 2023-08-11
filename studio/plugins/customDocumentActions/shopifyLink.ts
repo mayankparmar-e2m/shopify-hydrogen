@@ -1,5 +1,5 @@
 import {EarthGlobeIcon} from '@sanity/icons'
-import {collectionUrl, productUrl, productVariantUrl} from '../../utils/shopifyUrls'
+import {collectionUrl, pageUrl, productUrl, productVariantUrl} from '../../utils/shopifyUrls'
 import {type DocumentActionDescription} from 'sanity'
 import type {ShopifyDocument, ShopifyDocumentActionProps} from './types'
 
@@ -21,7 +21,9 @@ export default (props: ShopifyDocumentActionProps): DocumentActionDescription | 
   if (type === 'productVariant') {
     url = productVariantUrl(published?.store?.productId, published?.store?.id)
   }
-
+  if (type === 'page') {
+    url = pageUrl(published?.store?.id)
+  }
   if (!url) {
     return
   }
