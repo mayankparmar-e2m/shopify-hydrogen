@@ -6,7 +6,7 @@ export default function ImageWithText({section}) {
   const {image, title, desc, ctaUrl, ctaLabel} = section;
   return (
     <div className="image-with-text bg-color_beige py-16 ">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-6 md:px-0">
         <div className="image-with-text__wrapper block md:flex md:items-center md:gap-20">
           <div className="image">
             <SanityImage src={image.asset._ref} alt={title} />
