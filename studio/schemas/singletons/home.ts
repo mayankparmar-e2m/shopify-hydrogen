@@ -105,6 +105,26 @@ export default defineField({
 
       
     }),
+    defineField({
+      name: 'blogSection',
+      title: 'Blog section',
+      type:"object",
+      fields:[
+      {
+        type:"string",
+        name:"title",
+        title:"Title"
+      },
+      {
+        type:"string",
+        name:"subtitle",
+        title:"Subtitle"
+      }
+      ],
+      group: 'editorial',
+
+      
+    }),
     // Modules
     defineField({
       name: 'modules',

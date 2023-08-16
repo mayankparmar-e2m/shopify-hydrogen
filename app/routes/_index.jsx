@@ -12,6 +12,9 @@ import {HOME_WHO_WE_ARE} from '~/queries/sanity/sections/home/whoWeAre';
 import WhoWeAre from '~/components/pages/home/WhoWeAre';
 import {IMAGE_WITH_TEXT} from '~/queries/sanity/global/ImageWithText';
 import ImageWithText from '~/components/global/ImageWithText';
+import {HOME_BLOG_SECTION} from '~/queries/sanity/sections/home/homeBlog';
+import {ARTICLES} from '~/queries/shopify/articles';
+import HomeBlogSection from '~/components/pages/home/HomeBlogSection';
 
 export const meta = () => {
   return [{title: `E2M | Home`}];
@@ -60,6 +63,21 @@ export async function loader({context}) {
     query: IMAGE_WITH_TEXT,
   });
   // home image with text end
+
+  // HOME BLOG SECTION START
+  const homeBlogSectionData = Promise.all([
+    sanity.query({
+      query: HOME_BLOG_SECTION,
+    }),
+    apollo.query({
+      query: ARTICLES,
+      variables: {
+        first: 4,
+      },
+    }),
+  ]);
+
+  //  HOME BLOG SECTION END
   return defer({
     heroSection,
     featureColloectionsdata,
@@ -67,6 +85,7 @@ export async function loader({context}) {
     homeCollectionList,
     whoWeAreSection,
     homeImageWithText,
+    homeBlogSectionData,
   });
 }
 
@@ -78,6 +97,7 @@ export default function Homepage() {
     homeCollectionList,
     whoWeAreSection,
     homeImageWithText,
+    homeBlogSectionData,
   } = useLoaderData();
   return (
     <div className="home">
@@ -137,6 +157,16 @@ export default function Homepage() {
         </Await>
       </Suspense>
       {/* home image with text end */}
+
+      {/* home blog section start */}
+      <Suspense fallback={<h1>Loading....</h1>}>
+        <Await resolve={homeBlogSectionData}>
+          {(homeBlogSectionData) => {
+            return <HomeBlogSection section={homeBlogSectionData} />;
+          }}
+        </Await>
+      </Suspense>
+      {/* home blog section  end */}
     </div>
   );
 }

@@ -224,3 +224,41 @@ export const PlaceHolderImage = (props) => {
   
 }
  
+
+export const SliderNextIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={49}
+    height={49}
+    fill="none"
+    {...props}
+  >
+    <circle
+      cx={24.5}
+      cy={24.5}
+      r={24}
+      fill="#fff"
+      stroke="#F9F9F5"
+      transform="matrix(-1 0 0 1 49 0)"
+    />
+    <path
+      fill="#A09364"
+      d="m28.7 24.3-6-5.9c-.4-.4-1.1-.4-1.5 0-.4.4-.4 1.1 0 1.5l5.3 5.1-5.2 5.2c-.4.4-.4 1.1 0 1.5.4.4 1.1.4 1.5 0l6-6c.3-.4.3-1-.1-1.4Z"
+    />
+  </svg>
+)
+export const SliderPrevIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={49}
+    height={49}
+    fill="none"
+    {...props}
+  >
+    <circle cx={24.5} cy={24.5} r={24} fill="#fff" stroke="#F9F9F5" />
+    <path
+      fill="#A09364"
+      d="m20.3 24.3 6-5.9c.4-.4 1.1-.4 1.5 0 .4.4.4 1.1 0 1.5L22.5 25l5.2 5.2c.4.4.4 1.1 0 1.5-.4.4-1.1.4-1.5 0l-6-6c-.3-.4-.3-1 .1-1.4Z"
+    />
+  </svg>
+)
