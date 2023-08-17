@@ -93,33 +93,32 @@ export default defineType({
           return true
         }),
     }),
-    // Show hero
-    defineField({
-      name: 'showHero',
-      title: 'Show hero',
-      type: 'boolean',
-      description: 'If disabled, page title will be displayed instead',
-      group: 'editorial',
-    }),
     // Hero
     defineField({
       name: 'hero',
-      title: 'Hero',
-      type: 'hero.collection',
-      hidden: ({document}) => !document?.showHero,
-      group: 'editorial',
-    }),
-    // Modules
-    defineField({
-      name: 'modules',
-      title: 'Modules',
-      type: 'array',
-      description: 'Editorial modules to associate with this collection',
-      of: [
-        {type: 'module.callout'},
-        {type: 'module.callToAction'},
-        {type: 'module.image'},
-        {type: 'module.instagram'},
+      title: 'Hero image',
+      type: 'object',
+      options:{
+        collapsed: true,
+        collapsible: true,
+      },
+      fields:[
+        {
+          name: 'img_desk',
+          title: 'Image - Desktop',
+          type: 'image',
+        },
+        {
+          name: 'img_mob',
+          title: 'Image - Mobile',
+          type: 'image',
+        },
+        {
+          name: 'title',
+          title: 'Title',
+          type: 'string',
+          initialValue:"store.title"
+        }
       ],
       group: 'editorial',
     }),

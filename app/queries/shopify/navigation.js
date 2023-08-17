@@ -1,5 +1,4 @@
 import gql from "graphql-tag";
-/* eslint no-use-before-define: 0 */
 export const MENUS_ITEMS = gql`
   fragment MenuItem on MenuItem {
     id
@@ -8,8 +7,7 @@ export const MENUS_ITEMS = gql`
     url
   }
 `;
-export const NAVIGATION_QUERY = gql`
-   ${MENUS_ITEMS}
+export const NAVIGATION_QUERY = gql`${MENUS_ITEMS}
    query layoutMenus(
     $country: CountryCode
     $language: LanguageCode

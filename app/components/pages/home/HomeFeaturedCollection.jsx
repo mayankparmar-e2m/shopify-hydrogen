@@ -1,15 +1,11 @@
-import {useState} from 'react';
-import {Swiper, SwiperSlide} from 'swiper/react';
+import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import ProductSnipet from '~/components/global/ProductSnipet';
 import { SliderNextIcon, SliderPrevIcon } from '~/components/global/Icons';
-import { useRef } from 'react';
-export default function HomeFeaturedCollection({section}) {
-  const {title, data} = section;
-  const sliderRef = useRef(null)
+export default function HomeFeaturedCollection({ section }) {
+  const { title, data } = section;
   const [activeCollectionIndex, setActiveCollectionIndex] = useState(0);
-  const navigationPrevRef = useRef(null)
-  const navigationNextRef = useRef(null)
   return (
     <section className="feature-collection pt-20 pb-32">
       <h2 className="text-center text-primary text-2xl md:text-3xl font-normal uppercase leading-9 tracking-widest">
@@ -26,10 +22,9 @@ export default function HomeFeaturedCollection({section}) {
               >
                 <p
                   className={`
-                    ${
-                      index === activeCollectionIndex
-                        ? "text-secondary after:absolute after:h-[1px] after:w-full after:left-0 after:-bottom-2 after:bg-secondary after:content-['']"
-                        : "text-['#231F20'] opacity-50"
+                    ${index === activeCollectionIndex
+                      ? "text-secondary after:absolute after:h-[1px] after:w-full after:left-0 after:-bottom-2 after:bg-secondary after:content-['']"
+                      : "text-['#231F20'] opacity-50"
                     }   
                     feature_title
                   text-center  text-xs font-medium uppercase tracking-wider`}
@@ -48,47 +43,45 @@ export default function HomeFeaturedCollection({section}) {
                 key={tab.data.data.collection.id}
               >
                 {index == activeCollectionIndex && (
-                  <Swiper
-
-                    slidesPerView={1.5}
-                    loop={true}
-                    onBeforeInit={(swiper) => {
-                      swiper.params.navigation.prevEl = navigationPrevRef.current;
-                      swiper.params.navigation.nextEl = navigationNextRef.current;
-                 }}
-                    centeredSlides={true}
-                    key={tab.data.data.collection.id}
-                    modules={[Navigation]}
-                    navigation={{
-                      // Both prevEl & nextEl are null at render so this does not work
-                      prevEl: navigationPrevRef.current,
-                      nextEl: navigationNextRef.current,
-                    }}
-                    spaceBetween={35}
-                    className="mySwiper"
-                    breakpoints={{
-                      // when window width is >= 768px
-                      768: {
-                        spaceBetween: 22,
-                        slidesPerView: 4,
-                        centeredSlides: false,
-                      },
-                    }}
-                  >
-                      <div ref={navigationPrevRef} >
+                  <>
+                    {/* <div id={`prev-slide`} >
                       <SliderPrevIcon/>
-                      </div>
-                    {tab.data.data.collection.products.nodes.map((product) => {
-                      return (
-                        <SwiperSlide key={product.id}>
-                          <ProductSnipet product={product} />
-                        </SwiperSlide>
-                      );
-                    })}
-                        <div ref={navigationNextRef}  >
-                      <SliderNextIcon/>
-                      </div>
-                  </Swiper>
+                      </div> */}
+                    <Swiper
+                      slidesPerView={1.5}
+                      loop={true}
+                      centeredSlides={true}
+                      key={tab.data.data.collection.id}
+                      modules={[Navigation]}
+                      navigation={{
+                        prevEl: `#prev-slide`,
+                        nextEl: `#next-slide`,
+                      }}
+                      spaceBetween={35}
+                      className="mySwiper"
+                      breakpoints={{
+                        // when window width is >= 768px
+                        768: {
+                          spaceBetween: 22,
+                          slidesPerView: 4,
+                          centeredSlides: false,
+                        },
+                      }}
+                    >
+                      {tab.data.data.collection.products.nodes.map(
+                        (product) => {
+                          return (
+                            <SwiperSlide key={product.id}>
+                              <ProductSnipet product={product} />
+                            </SwiperSlide>
+                          );
+                        },
+                      )}
+                    </Swiper>
+                    {/* <div id={`next-slide`}  >
+  <SliderNextIcon/>
+  </div> */}
+                  </>
                 )}
               </div>
             );

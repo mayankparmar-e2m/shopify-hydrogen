@@ -1,5 +1,6 @@
 import { useLocation } from '@remix-run/react';
 import { useMemo } from 'react';
+import { SORT_OPTIONS } from './constants';
 
 export function useVariantUrl(handle, selectedOptions) {
   const { pathname } = useLocation();
@@ -71,4 +72,84 @@ export const sanityReferenceToUrl = ({ _type, store }) => {
       return `/${childRoute}/${handle}`
     }
   }
+}
+// sort url
+export function getSortLink(sort, params, location) {
+  params.set('sort', sort);
+  return `${location.pathname}?${params.toString()}`;
+}
+// get sort value from params 
+export function getSortValuesFromParam(sortParam) {
+  const productSort = SORT_OPTIONS.find((option) => option.key === sortParam);
+
+  return (
+    productSort || {
+      sortKey: null,
+      reverse: false,
+    }
+  );
+}
+
+// generate filter url 
+export function getFilterLink(filter, rawInput, params, location) {
+  const paramsClone = new URLSearchParams(params);
+  const newParams = filterInputToParams(filter.type, rawInput, paramsClone);
+  return `${location.pathname}?${newParams.toString()}`;
+}
+// filter input to params
+function filterInputToParams(type, rawInput, params) {
+  const input = typeof rawInput === 'string' ? JSON.parse(rawInput) : rawInput;
+  switch (type) {
+    case 'PRICE_RANGE':
+      if (input.price.min) params.set('minPrice', input.price.min);
+      if (input.price.max) params.set('maxPrice', input.price.max);
+      break;
+    case 'LIST':
+      Object.entries(input).forEach(([key, value]) => {
+        if (typeof value === 'string') {
+          const multipleFilterType=["tag",'productVendor',"productType"];
+          const allFilterParams = params.getAll(key);
+          // select multiple filter option
+          if(multipleFilterType.includes(key)){
+            if(!allFilterParams.includes(value)){
+              params.append(key, value);
+            }
+          }else{
+              params.set(key, value);
+          }
+          
+        } else if (typeof value === 'boolean') {
+          params.set(key, value.toString());
+        }
+        else {  
+          const {name, value: val} = value;
+          const allVariants = params.getAll(`variantOption`);
+          const newVariant = `${name}:${val}`;
+          if (!allVariants.includes(newVariant)) {
+            params.append('variantOption', newVariant);
+          }
+        }
+      });
+      break;
+  }
+
+  return params;
+}
+// remove applied filter from url params
+
+export function getRemoveedAppliedFilterParamsUrl(filter, params, location) {
+  const paramsClone = new URLSearchParams(params);
+  if (filter.urlParam.key === 'variantOption') {
+    const variantOptions = paramsClone.getAll('variantOption');
+    const filteredVariantOptions = variantOptions.filter(
+      (options) => !options.includes(filter.urlParam.value),
+    );
+    paramsClone.delete(filter.urlParam.key);
+    for (const filteredVariantOption of filteredVariantOptions) {
+      paramsClone.append(filter.urlParam.key, filteredVariantOption);
+    }
+  } else {
+    paramsClone.delete(filter.urlParam.key);
+  }
+  return `${location.pathname}?${paramsClone.toString()}`;
 }

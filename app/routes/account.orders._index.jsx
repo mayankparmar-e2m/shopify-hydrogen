@@ -169,8 +169,7 @@ export const CUSTOMER_FRAGMENT = `#graphql
 `;
 
 // NOTE: https://shopify.dev/docs/api/storefront/latest/queries/customer
-const CUSTOMER_ORDERS_QUERY = `#graphql
-  ${CUSTOMER_FRAGMENT}
+const CUSTOMER_ORDERS_QUERY = `#graphql${CUSTOMER_FRAGMENT}
   query CustomerOrders(
     $country: CountryCode
     $customerAccessToken: String!
