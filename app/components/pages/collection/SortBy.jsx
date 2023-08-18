@@ -44,7 +44,7 @@ export default function SortBy() {
     };
   }, [wrapperRef]);
   return (
-    <div className="collection-sortby-wrapper relative w-[22%]" ref={wrapperRef}>
+    <div className="collection-sortby-wrapper relative md:w-[22%]" ref={wrapperRef}>
       <div
         className="flex items-center gap-3 md:gap-7 cursor-pointer"
         onClick={selectSortBy}

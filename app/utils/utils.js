@@ -92,12 +92,14 @@ export function getSortValuesFromParam(sortParam) {
 
 // generate filter url 
 export function getFilterLink(filter, rawInput, params, location) {
+  console.log(filter, rawInput, params, location,'dwdwdwfwfwf')
   const paramsClone = new URLSearchParams(params);
   const newParams = filterInputToParams(filter.type, rawInput, paramsClone);
   return `${location.pathname}?${newParams.toString()}`;
 }
 // filter input to params
 function filterInputToParams(type, rawInput, params) {
+  console.log(params,'paramsparams')
   const input = typeof rawInput === 'string' ? JSON.parse(rawInput) : rawInput;
   switch (type) {
     case 'PRICE_RANGE':
@@ -108,7 +110,9 @@ function filterInputToParams(type, rawInput, params) {
       Object.entries(input).forEach(([key, value]) => {
         if (typeof value === 'string') {
           const multipleFilterType=["tag",'productVendor',"productType"];
-          const allFilterParams = params.getAll(key);
+           
+          const allFilterParams = params.getAll(key)
+          console.log(key, value, params.values(),'allFilterParamsallFilterParams')
           // select multiple filter option
           if(multipleFilterType.includes(key)){
             if(!allFilterParams.includes(value)){
@@ -125,6 +129,7 @@ function filterInputToParams(type, rawInput, params) {
           const {name, value: val} = value;
           const allVariants = params.getAll(`variantOption`);
           const newVariant = `${name}:${val}`;
+          console.log(allVariants,'allVariantsallVariants')
           if (!allVariants.includes(newVariant)) {
             params.append('variantOption', newVariant);
           }
@@ -139,14 +144,15 @@ function filterInputToParams(type, rawInput, params) {
 
 export function getRemoveedAppliedFilterParamsUrl(filter, params, location) {
   const paramsClone = new URLSearchParams(params);
-  if (filter.urlParam.key === 'variantOption') {
-    const variantOptions = paramsClone.getAll('variantOption');
-    const filteredVariantOptions = variantOptions.filter(
+  const multipleFilterType=["tag",'productVendor',"productType",'variantOption'];
+  if  (multipleFilterType.includes(filter.urlParam.key)) {
+    const getAllSelectedFilterParamKey = paramsClone.getAll(filter.urlParam.key);
+    const filteredSelectedFilterParamKeys= getAllSelectedFilterParamKey.filter(
       (options) => !options.includes(filter.urlParam.value),
     );
     paramsClone.delete(filter.urlParam.key);
-    for (const filteredVariantOption of filteredVariantOptions) {
-      paramsClone.append(filter.urlParam.key, filteredVariantOption);
+    for (const filteredSelectedFilterParamKey of filteredSelectedFilterParamKeys) {
+      paramsClone.append(filter.urlParam.key, filteredSelectedFilterParamKey);
     }
   } else {
     paramsClone.delete(filter.urlParam.key);

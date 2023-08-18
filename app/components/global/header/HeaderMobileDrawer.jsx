@@ -21,7 +21,7 @@ export default function HeaderMobileDrawer({
     <div className="mobile-drawer hidden max-md:block">
       <div className="mobile-drawer-backdrop bg-mobile_backDrop_color fixed w-full h-full top-8 left-0 z-10"></div>
       <div
-        className={`mobile-drawer px-8 py-5 fixed w-[85%] h-full top-8 left-0 z-20 bg-white overflow-y-auto  ${
+        className={`mobile-drawer px-8 py-5 fixed w-[85%] h-full top-8 left-0 z-10 bg-white overflow-y-auto  ${
           drawerAnimation ? 'animate-fade_In_Left' : 'animate-fade_Out_Left'
         }`}
         onAnimationEnd={() => {

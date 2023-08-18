@@ -1,10 +1,14 @@
 import { Link, useLocation, useSearchParams } from "@remix-run/react";
+import { useMemo } from "react";
 import { getRemoveedAppliedFilterParamsUrl } from "~/utils/utils";
 
 export default function ActiveFilter({ activeFilter }) {
     const [params] = useSearchParams();
     const location = useLocation();
-    const url = getRemoveedAppliedFilterParamsUrl(activeFilter, params, location)
+    
+    const url = useMemo(()=>{
+        return  getRemoveedAppliedFilterParamsUrl(activeFilter, params, location)
+      },[activeFilter, params, location])
     return (
         <Link to={url} className="px-2.5 py-0.5 bg-secondary justify-center items-center gap-3.5 inline-flex" >
             <p class="text-white text-xs font-medium uppercase tracking-wide">{activeFilter.label}</p>

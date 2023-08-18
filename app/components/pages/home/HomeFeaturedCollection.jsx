@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import ProductSnipet from '~/components/global/ProductSnipet';
-import { SliderNextIcon, SliderPrevIcon } from '~/components/global/Icons';
 export default function HomeFeaturedCollection({ section }) {
   const { title, data } = section;
   const [activeCollectionIndex, setActiveCollectionIndex] = useState(0);

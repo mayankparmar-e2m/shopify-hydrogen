@@ -3,8 +3,9 @@ import { useLoaderData, Link } from '@remix-run/react';
 import { Pagination, getPaginationVariables } from '@shopify/hydrogen';
 import ProductSnipet from '~/components/global/ProductSnipet';
 import SortBy from '~/components/pages/collection/SortBy';
-import { getSortValuesFromParam } from '~/utils/utils';
+import { getSortValuesFromParam, overFlowHidden } from '~/utils/utils';
 import FilterOptions from '~/components/pages/collection/FilterOptions';
+import useLocalStorage from '~/hook/useLocalStorage';
 
 export const meta = ({ data }) => {
   return [{ title: `Hydrogen | ${data.collection.title} Collection` }];
@@ -85,7 +86,18 @@ export async function loader({ request, params, context }) {
 
 export default function Collection() {
   const { collection, appliedFilters } = useLoaderData();
+ const [value,setValue]= useLocalStorage("showMobileFilterPopup",false)
+ 
   const { products } = collection
+  const showMobileFilter=()=>{
+    overFlowHidden("body",true)
+    setValue(true)
+  }
+  const closeMobilefilter=()=>{
+    overFlowHidden("body",false)
+    setValue(false)
+  }
+  console.log(value,'valuevalue')
   return (
     <div className="collection">
       <h1>{collection.title}</h1>
@@ -94,10 +106,10 @@ export default function Collection() {
       <div className="collection-filter-wrapper  py-4 md:py-8 border-t border-b border-solid border-primary mb-12">
         <div className='container  mx-auto  px-6'>
           <div className='flex items-center justify-between'>
-            <div className='flex items-center w-[78%]'>
-              <p className="text-primary text-xs font-normal uppercase tracking-wider  mr-7">Filters</p>
-              <div className='fiter-options'>
-                <FilterOptions filters={products.filters} appliedFilters={appliedFilters} />
+            <div className='flex items-center md:w-[78%]'>
+              <p onClick={showMobileFilter} className="text-primary text-xs font-normal uppercase tracking-wider  mr-7">Filters</p>
+              <div className='fiter-options' >
+                <FilterOptions onClosePopup={closeMobilefilter} showMobileFilterPopup ={value} filters={products.filters} appliedFilters={appliedFilters} />
               </div>
             </div>
             <SortBy initialSortOrder="MANUAL" />
