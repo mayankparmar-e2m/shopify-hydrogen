@@ -50,7 +50,9 @@ export default {
         storefrontId: env.PUBLIC_STOREFRONT_ID,
         storefrontHeaders: getStorefrontHeaders(request),
       });
-      const httpLink = createHttpLink({uri:`https://${env.PUBLIC_STORE_DOMAIN}/api/${env.PUBLIC_STOREFRONT_API_VERSION}/graphql.json`});
+      const httpLink = createHttpLink({
+        uri: `https://${env.PUBLIC_STORE_DOMAIN}/api/${env.PUBLIC_STOREFRONT_API_VERSION}/graphql.json`,
+      });
       const middlewareLink = setContext(() => ({
         headers: {
           'X-Shopify-Storefront-Access-Token': env.PUBLIC_STOREFRONT_API_TOKEN,

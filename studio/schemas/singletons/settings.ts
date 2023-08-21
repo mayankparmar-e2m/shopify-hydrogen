@@ -35,7 +35,6 @@ export default defineType({
       title: 'Footer',
       type: 'brandInformation',
       group: 'general_setting',
-
     }),
     // Social Media
     defineField({
@@ -43,11 +42,9 @@ export default defineType({
       title: 'Social Media',
       type: 'object',
       group: 'general_setting',
-      description:"Add a Social Media platform URL.",
-      options: { collapsible: true, collapsed: true,
-       columns:2,
-      },
-      fields:[
+      description: 'Add a Social Media platform URL.',
+      options: {collapsible: true, collapsed: true, columns: 2},
+      fields: [
         {
           name: 'facebook',
           title: 'Facebook',
@@ -68,16 +65,16 @@ export default defineType({
           title: 'YouTube',
           type: 'url',
         },
-      ]
+      ],
     }),
-     // Store Header Bar
-     defineField({
+    // Store Header Bar
+    defineField({
       name: 'headerBar',
       title: 'Header Bar',
       type: 'object',
       group: 'general_setting',
-      options: { collapsible: true, collapsed: true,},
-      fields:[
+      options: {collapsible: true, collapsed: true},
+      fields: [
         {
           name: 'title',
           title: 'Title',
@@ -90,19 +87,18 @@ export default defineType({
           weak: true,
           to: [{type: 'collection'}],
         },
-      ]
+      ],
     }),
     defineField({
       name: 'footerIcons',
       title: 'footer Icons',
       type: 'array',
       group: 'general_setting',
-      of:[
+      of: [
         {
-          type:"footerIcons"
-        }
-      ]
-      
+          type: 'footerIcons',
+        },
+      ],
     }),
     // Not found page
     defineField({

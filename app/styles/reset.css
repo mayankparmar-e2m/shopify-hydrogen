@@ -62,7 +62,6 @@ body {
   min-height: 100vh;
 }
 
-
 fieldset {
   display: flex;
   flex-direction: column;

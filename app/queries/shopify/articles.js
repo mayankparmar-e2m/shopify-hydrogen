@@ -1,27 +1,27 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 /* eslint no-use-before-define: 0 */
 export const ARTICLES = gql`
- query Articles($first: Int) {
-  articles(first: $first) {
-    nodes {
-      title
-      blog {
+  query Articles($first: Int) {
+    articles(first: $first) {
+      nodes {
+        title
+        blog {
+          handle
+        }
+        image {
+          width
+          url
+          id
+          height
+          altText
+        }
         handle
-      }
-      image {
-        width
-        url
+        excerptHtml
         id
-        height
-        altText
+        excerpt
+        contentHtml
+        content
       }
-      handle
-      excerptHtml
-      id
-      excerpt
-      contentHtml
-      content
     }
   }
-}
 `;

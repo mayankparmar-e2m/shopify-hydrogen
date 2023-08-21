@@ -1,9 +1,9 @@
-import { useLocation } from '@remix-run/react';
-import { useMemo } from 'react';
-import { SORT_OPTIONS } from './constants';
+import {useLocation} from '@remix-run/react';
+import {useMemo} from 'react';
+import {SORT_OPTIONS} from './constants';
 
 export function useVariantUrl(handle, selectedOptions) {
-  const { pathname } = useLocation();
+  const {pathname} = useLocation();
 
   return useMemo(() => {
     return getVariantUrl({
@@ -36,49 +36,47 @@ export function getVariantUrl({
 
   return path + (searchString ? '?' + searchParams.toString() : '');
 }
-// add overflow-hidden global class in selected section ex. section = body,.className,#IdName;add=true/false 
+// add overflow-hidden global class in selected section ex. section = body,.className,#IdName;add=true/false
 export const overFlowHidden = (section, add) => {
-  const selectedSection = document.querySelector(`${section}`)
+  const selectedSection = document.querySelector(`${section}`);
   if (selectedSection) {
     if (add) {
-      selectedSection.classList.add("overflow-hidden")
+      selectedSection.classList.add('overflow-hidden');
     } else {
-      selectedSection.classList.remove("overflow-hidden")
+      selectedSection.classList.remove('overflow-hidden');
     }
-
   }
-
-}
-export const sanityReferenceToUrl = ({ _type, store }) => {
+};
+export const sanityReferenceToUrl = ({_type, store}) => {
   const handle = store?.slug?.current;
   let childRoute;
   switch (_type) {
-    case "collection":
-      childRoute = "collections"
+    case 'collection':
+      childRoute = 'collections';
       break;
-    case "product":
-      childRoute = "products"
+    case 'product':
+      childRoute = 'products';
       break;
-    case "home":
-      childRoute = "home"
+    case 'home':
+      childRoute = 'home';
       break;
     default:
       break;
   }
-  if (childRoute == "home") {
-    return `/`
+  if (childRoute == 'home') {
+    return `/`;
   } else {
     if (handle && childRoute) {
-      return `/${childRoute}/${handle}`
+      return `/${childRoute}/${handle}`;
     }
   }
-}
+};
 // sort url
 export function getSortLink(sort, params, location) {
   params.set('sort', sort);
   return `${location.pathname}?${params.toString()}`;
 }
-// get sort value from params 
+// get sort value from params
 export function getSortValuesFromParam(sortParam) {
   const productSort = SORT_OPTIONS.find((option) => option.key === sortParam);
 
@@ -90,7 +88,7 @@ export function getSortValuesFromParam(sortParam) {
   );
 }
 
-// generate filter url 
+// generate filter url
 export function getFilterLink(filter, rawInput, params, location) {
   const paramsClone = new URLSearchParams(params);
   const newParams = filterInputToParams(filter.type, rawInput, paramsClone);
@@ -107,22 +105,20 @@ function filterInputToParams(type, rawInput, params) {
     case 'LIST':
       Object.entries(input).forEach(([key, value]) => {
         if (typeof value === 'string') {
-          const multipleFilterType=["tag",'productVendor',"productType"];
-           
-          const allFilterParams = params.getAll(key)
+          const multipleFilterType = ['tag', 'productVendor', 'productType'];
+
+          const allFilterParams = params.getAll(key);
           // select multiple filter option
-          if(multipleFilterType.includes(key)){
-            if(!allFilterParams.includes(value)){
+          if (multipleFilterType.includes(key)) {
+            if (!allFilterParams.includes(value)) {
               params.append(key, value);
             }
-          }else{
-              params.set(key, value);
+          } else {
+            params.set(key, value);
           }
-          
         } else if (typeof value === 'boolean') {
           params.set(key, value.toString());
-        }
-        else {  
+        } else {
           const {name, value: val} = value;
           const allVariants = params.getAll(`variantOption`);
           const newVariant = `${name}:${val}`;
@@ -140,10 +136,17 @@ function filterInputToParams(type, rawInput, params) {
 
 export function getRemoveedAppliedFilterParamsUrl(filter, params, location) {
   const paramsClone = new URLSearchParams(params);
-  const multipleFilterType=["tag",'productVendor',"productType",'variantOption'];
-  if  (multipleFilterType.includes(filter.urlParam.key)) {
-    const getAllSelectedFilterParamKey = paramsClone.getAll(filter.urlParam.key);
-    const filteredSelectedFilterParamKeys= getAllSelectedFilterParamKey.filter(
+  const multipleFilterType = [
+    'tag',
+    'productVendor',
+    'productType',
+    'variantOption',
+  ];
+  if (multipleFilterType.includes(filter.urlParam.key)) {
+    const getAllSelectedFilterParamKey = paramsClone.getAll(
+      filter.urlParam.key,
+    );
+    const filteredSelectedFilterParamKeys = getAllSelectedFilterParamKey.filter(
       (options) => !options.includes(filter.urlParam.value),
     );
     paramsClone.delete(filter.urlParam.key);
@@ -155,66 +158,73 @@ export function getRemoveedAppliedFilterParamsUrl(filter, params, location) {
   }
   return `${location.pathname}?${paramsClone.toString()}`;
 }
-export function generateFilterUrl(selectedFilters){
-  let url= `${window.location.pathname}?`;
+export function generateFilterUrl(selectedFilters) {
+  let url = `${window.location.pathname}?`;
   for (let index = 0; index < selectedFilters.length; index++) {
     const element = selectedFilters[index];
-    if(index === 0){
-        url=url+`${element.urlParam.key}=${element.urlParam.value}`
-    }else{
-        url=url+`&${element.urlParam.key}=${element.urlParam.value}`
+    if (index === 0) {
+      url = url + `${element.urlParam.key}=${element.urlParam.value}`;
+    } else {
+      url = url + `&${element.urlParam.key}=${element.urlParam.value}`;
     }
-   
- }
- return url
-}
-export const generateFilterUrlFromSelectedFilters=(singlefilter,appliedFilters=[])=>{
-  let selectedFilters=[]
-  const filterObj=Object.entries(JSON.parse(singlefilter.input))
-  let filterValue;
-  const filterValueType =typeof(filterObj[0][1])
-  switch (filterValueType) {
-     case 'string':
-         filterValue=filterObj[0][1]
-       break;
-     case 'boolean':
-         filterValue=filterObj[0][1].toString()
-       break;
-       default:
-         filterValue=`${filterObj[0][1].name}:${filterObj[0][1].value}`
-   }
-  const applyFilter={
-     urlParam:{
-         key:filterObj[0][0],
-         value:filterValue
-     },
-     label:singlefilter.label
   }
-    const alreadyApplyFilter=[...appliedFilters]
-    if(alreadyApplyFilter?.length > 0){    
-     if(filterValueType === 'boolean' ){
-      const booleanFiltersAlreadyApply=alreadyApplyFilter.filter((item)=>item.urlParam.key !== applyFilter.urlParam.key);
-      selectedFilters=[...booleanFiltersAlreadyApply,applyFilter]
-      return {selectedFilters,url:generateFilterUrl(selectedFilters)}
-     }else{
-         let filterAlreadyApply=false
-         for (let index = 0; index < alreadyApplyFilter.length; index++) {
-             const element = alreadyApplyFilter[index];
-             if(element.urlParam.key === applyFilter.urlParam.key && element.urlParam.value === applyFilter.urlParam.value){
-                 alreadyApplyFilter.splice(index,1);
-                 filterAlreadyApply=true
-             }
-         }
-        if(filterAlreadyApply){
-             selectedFilters= [...alreadyApplyFilter]
-             return {selectedFilters,url:generateFilterUrl(selectedFilters)}
-         }else{
-             selectedFilters=[...alreadyApplyFilter,applyFilter]
-             return {selectedFilters,url:generateFilterUrl(selectedFilters)}
-         }
-     }
-    }else{
-     selectedFilters=[applyFilter]
-        return {selectedFilters,url:generateFilterUrl(selectedFilters)}
-    } 
+  return url;
 }
+export const generateFilterUrlFromSelectedFilters = (
+  singlefilter,
+  appliedFilters = [],
+) => {
+  let selectedFilters = [];
+  const filterObj = Object.entries(JSON.parse(singlefilter.input));
+  let filterValue;
+  const filterValueType = typeof filterObj[0][1];
+  switch (filterValueType) {
+    case 'string':
+      filterValue = filterObj[0][1];
+      break;
+    case 'boolean':
+      filterValue = filterObj[0][1].toString();
+      break;
+    default:
+      filterValue = `${filterObj[0][1].name}:${filterObj[0][1].value}`;
+  }
+  const applyFilter = {
+    urlParam: {
+      key: filterObj[0][0],
+      value: filterValue,
+    },
+    label: singlefilter.label,
+  };
+  const alreadyApplyFilter = [...appliedFilters];
+  if (alreadyApplyFilter?.length > 0) {
+    if (filterValueType === 'boolean') {
+      const booleanFiltersAlreadyApply = alreadyApplyFilter.filter(
+        (item) => item.urlParam.key !== applyFilter.urlParam.key,
+      );
+      selectedFilters = [...booleanFiltersAlreadyApply, applyFilter];
+      return {selectedFilters, url: generateFilterUrl(selectedFilters)};
+    } else {
+      let filterAlreadyApply = false;
+      for (let index = 0; index < alreadyApplyFilter.length; index++) {
+        const element = alreadyApplyFilter[index];
+        if (
+          element.urlParam.key === applyFilter.urlParam.key &&
+          element.urlParam.value === applyFilter.urlParam.value
+        ) {
+          alreadyApplyFilter.splice(index, 1);
+          filterAlreadyApply = true;
+        }
+      }
+      if (filterAlreadyApply) {
+        selectedFilters = [...alreadyApplyFilter];
+        return {selectedFilters, url: generateFilterUrl(selectedFilters)};
+      } else {
+        selectedFilters = [...alreadyApplyFilter, applyFilter];
+        return {selectedFilters, url: generateFilterUrl(selectedFilters)};
+      }
+    }
+  } else {
+    selectedFilters = [applyFilter];
+    return {selectedFilters, url: generateFilterUrl(selectedFilters)};
+  }
+};

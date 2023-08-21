@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from 'groq';
 
 export const HOME_COLLECTION_LIST_QUERY = groq`
 *[_type == 'home'] | order(_updatedAt desc) [0]{
@@ -14,4 +14,4 @@ export const HOME_COLLECTION_LIST_QUERY = groq`
     }
   }
 }
-`
+`;

@@ -26,7 +26,7 @@ export default function WhoWeAre({section}) {
                       alt={item.title}
                       className="rounded-full"
                       noSrcSet={true}
-                      loading={"lazy"}
+                      loading={'lazy'}
                     />
                   </div>
                   <p className="text-center mb-3 mt-5 text-primary text-xs font-normal uppercase tracking-wider">

@@ -12,7 +12,7 @@ export const findLastNonNullValue = (items, currentIndex) => {
 };
 
 // @ts-expect-error
-const generateSrcSet = (urlBuilder, breakpoints, { quality }) => {
+const generateSrcSet = (urlBuilder, breakpoints, {quality}) => {
   return (
     breakpoints
       // @ts-expect-error
@@ -80,8 +80,8 @@ export default function SanityImage(props) {
     src,
     width,
     noSrcSet = false,
-    loading = "lazy",
-    decoding = "async",
+    loading = 'lazy',
+    decoding = 'async',
     ...rest
   } = props;
 
@@ -101,7 +101,7 @@ export default function SanityImage(props) {
   delete rest?.['srcSet'];
   delete rest?.['style'];
 
-  const urlBuilder = imageUrlBuilder({ projectId, dataset }).image({
+  const urlBuilder = imageUrlBuilder({projectId, dataset}).image({
     _ref: src,
     crop,
     hotspot,
@@ -109,7 +109,7 @@ export default function SanityImage(props) {
 
   // Generate srcset + sizes
   const srcSetSizes = generateSizes(BREAKPOINTS, sizes);
-  const srcSet = generateSrcSet(urlBuilder, BREAKPOINTS, { quality });
+  const srcSet = generateSrcSet(urlBuilder, BREAKPOINTS, {quality});
 
   // Determine image aspect ratio (factoring in any potential crop)
   let aspectRatio;

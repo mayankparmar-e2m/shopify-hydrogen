@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import {useState} from 'react';
+import {Swiper, SwiperSlide} from 'swiper/react';
+import {Navigation} from 'swiper/modules';
 import ProductSnipet from '~/components/global/ProductSnipet';
-export default function HomeFeaturedCollection({ section }) {
-  const { title, data } = section;
+export default function HomeFeaturedCollection({section}) {
+  const {title, data} = section;
   const [activeCollectionIndex, setActiveCollectionIndex] = useState(0);
   return (
     <section className="feature-collection pt-20 pb-32">
@@ -21,9 +21,10 @@ export default function HomeFeaturedCollection({ section }) {
               >
                 <p
                   className={`
-                    ${index === activeCollectionIndex
-                      ? "text-secondary after:absolute after:h-[1px] after:w-full after:left-0 after:-bottom-2 after:bg-secondary after:content-['']"
-                      : "text-['#231F20'] opacity-50"
+                    ${
+                      index === activeCollectionIndex
+                        ? "text-secondary after:absolute after:h-[1px] after:w-full after:left-0 after:-bottom-2 after:bg-secondary after:content-['']"
+                        : "text-['#231F20'] opacity-50"
                     }   
                     feature_title
                   text-center  text-xs font-medium uppercase tracking-wider`}

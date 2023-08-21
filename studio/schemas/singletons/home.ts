@@ -1,6 +1,6 @@
 import {HomeIcon} from '@sanity/icons'
 import {defineField} from 'sanity'
-import { PAGE_REFERENCES } from '../../constants'
+import {PAGE_REFERENCES} from '../../constants'
 
 const TITLE = 'Home'
 
@@ -31,99 +31,90 @@ export default defineField({
     defineField({
       name: 'featureCollections',
       title: 'Feature Colloections',
-      type:"object",
+      type: 'object',
       group: 'editorial',
-      fields:[
+      fields: [
         {
-          type:"string",
-          name:"title",
-          title:"Section Title"
+          type: 'string',
+          name: 'title',
+          title: 'Section Title',
         },
         {
           type: 'featureCollections',
-          name:"featureCollectionsData",
-
-        }
+          name: 'featureCollectionsData',
+        },
       ],
-      
     }),
     defineField({
       name: 'homeCollectionList',
       title: 'Collection list',
-      type:"array",
+      type: 'array',
       group: 'editorial',
-      of:[
+      of: [
         {
-          type:"collectionList"
-        }
-      ]
-      
+          type: 'collectionList',
+        },
+      ],
     }),
     defineField({
       name: 'homeWhoWeAre',
       title: 'Who We Are Section',
-      type:"object",
+      type: 'object',
       group: 'editorial',
-      fields:[
-         {
-          type:"string",
-          name:"title",
-          title:"Title"
-         },
-         {
-          type:"string",
-          name:"ctaLabel",
-          title:"CTA Button Label"
-         },
-         {
+      fields: [
+        {
+          type: 'string',
+          name: 'title',
+          title: 'Title',
+        },
+        {
+          type: 'string',
+          name: 'ctaLabel',
+          title: 'CTA Button Label',
+        },
+        {
           type: 'reference',
           weak: true,
           validation: (Rule) => Rule.required(),
           to: PAGE_REFERENCES,
-          title:"CTA Button URL",
-          name:"ctaUrl"
-         },
-         {
+          title: 'CTA Button URL',
+          name: 'ctaUrl',
+        },
+        {
           type: 'array',
-          title:"Select Who We Are Data",
-          name:"data",
-          of:[
+          title: 'Select Who We Are Data',
+          name: 'data',
+          of: [
             {
-              type:"whoWeAreData"
-            }
-          ]
-         }
-      
-      ]
-      
+              type: 'whoWeAreData',
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'homeImageWithText',
       title: 'Home Image With Text',
-      type:"imageWithText",
+      type: 'imageWithText',
       group: 'editorial',
-
-      
     }),
     defineField({
       name: 'blogSection',
       title: 'Blog section',
-      type:"object",
-      fields:[
-      {
-        type:"string",
-        name:"title",
-        title:"Title"
-      },
-      {
-        type:"string",
-        name:"subtitle",
-        title:"Subtitle"
-      }
+      type: 'object',
+      fields: [
+        {
+          type: 'string',
+          name: 'title',
+          title: 'Title',
+        },
+        {
+          type: 'string',
+          name: 'subtitle',
+          title: 'Subtitle',
+        },
       ],
       group: 'editorial',
-
-      
     }),
     // Modules
     defineField({

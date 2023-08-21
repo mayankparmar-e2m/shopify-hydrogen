@@ -17,9 +17,9 @@ import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
-import {  NAVIGATION_QUERY } from './queries/shopify/navigation';
-import { SANITY_HEADER_QUERY } from './queries/sanity/header';
-import { SANITY_FOOTER_QUERY } from './queries/sanity/footer';
+import {NAVIGATION_QUERY} from './queries/shopify/navigation';
+import {SANITY_HEADER_QUERY} from './queries/sanity/header';
+import {SANITY_FOOTER_QUERY} from './queries/sanity/footer';
 
 export function links() {
   return [
@@ -27,18 +27,16 @@ export function links() {
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
     {
-      rel:"preconnect",
-      href:"https://fonts.googleapis.com"
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com',
     },
     {
-      rel:"preconnect",
-      href:"https://fonts.gstatic.com",
-      
+      rel: 'preconnect',
+      href: 'https://fonts.gstatic.com',
     },
     {
-      rel:"stylesheet",
-      href:"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,700&display=swap",
-      
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,700&display=swap',
     },
     {
       rel: 'preconnect',
@@ -53,7 +51,7 @@ export function links() {
 }
 
 export async function loader({context}) {
-  const {storefront, session, cart,apollo,sanity} = context;
+  const {storefront, session, cart, apollo, sanity} = context;
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
   // validate the customer access token is valid
@@ -65,32 +63,33 @@ export async function loader({context}) {
   // defer the cart query by not awaiting it
   const cartPromise = cart.get();
   // await the header query (above the fold)
-  const headerPromise = await apollo.query( {
+  const headerPromise = await apollo.query({
     cache: storefront.CacheLong(),
-    query:NAVIGATION_QUERY,
+    query: NAVIGATION_QUERY,
     variables: {
       headerMenuHandle: 'main-menu', // Adjust to your header menu handle
     },
   });
 
-  const headerBar=await sanity.query({
-    query:SANITY_HEADER_QUERY
-  }) 
+  const headerBar = await sanity.query({
+    query: SANITY_HEADER_QUERY,
+  });
   // footer QUERY
-  const siteFooter=Promise.all([
-    sanity.query({query:SANITY_FOOTER_QUERY}), apollo.query({
+  const siteFooter = Promise.all([
+    sanity.query({query: SANITY_FOOTER_QUERY}),
+    apollo.query({
       cache: storefront.CacheLong(),
-      query:NAVIGATION_QUERY,
+      query: NAVIGATION_QUERY,
       variables: {
         headerMenuHandle: 'footer', // Adjust to your header menu handle
       },
-    })
-  ])
-  
- 
-  const header={
-    ...headerPromise,...headerBar
-  }
+    }),
+  ]);
+
+  const header = {
+    ...headerPromise,
+    ...headerBar,
+  };
   return defer(
     {
       cart: cartPromise,
@@ -115,7 +114,7 @@ export default function App() {
       </head>
       <body>
         <Layout {...data}>
-        <Outlet />
+          <Outlet />
         </Layout>
         <ScrollRestoration />
         <Scripts />
@@ -146,17 +145,16 @@ export function ErrorBoundary() {
         <Links />
       </head>
       <body>
-      
-          <div className="route-error">
-            <h1>Oops</h1>
-            <h2>{errorStatus}</h2>
-            {errorMessage && (
-              <fieldset>
-                <pre>{errorMessage}</pre>
-              </fieldset>
-            )}
-          </div>
-     
+        <div className="route-error">
+          <h1>Oops</h1>
+          <h2>{errorStatus}</h2>
+          {errorMessage && (
+            <fieldset>
+              <pre>{errorMessage}</pre>
+            </fieldset>
+          )}
+        </div>
+
         <ScrollRestoration />
         <Scripts />
       </body>

@@ -1,10 +1,10 @@
-import { Link } from '@remix-run/react';
-import { Image } from '@shopify/hydrogen';
+import {Link} from '@remix-run/react';
+import {Image} from '@shopify/hydrogen';
 
-export default function HomeBlogSection({ section = [] }) {
-  const { blogSection, data } = Object.assign({}, ...section);
+export default function HomeBlogSection({section = []}) {
+  const {blogSection, data} = Object.assign({}, ...section);
   const blogs = data.articles.nodes;
-  const { subtitle, title } = blogSection;
+  const {subtitle, title} = blogSection;
   return (
     <>
       {(subtitle || title) && (

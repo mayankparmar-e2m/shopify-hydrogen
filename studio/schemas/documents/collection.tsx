@@ -98,11 +98,11 @@ export default defineType({
       name: 'hero',
       title: 'Hero image',
       type: 'object',
-      options:{
+      options: {
         collapsed: true,
         collapsible: true,
       },
-      fields:[
+      fields: [
         {
           name: 'img_desk',
           title: 'Image - Desktop',
@@ -117,7 +117,7 @@ export default defineType({
           name: 'title',
           title: 'Title',
           type: 'string',
-        }
+        },
       ],
       group: 'editorial',
     }),

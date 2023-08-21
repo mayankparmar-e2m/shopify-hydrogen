@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from 'groq';
 export const IMAGE_WITH_TEXT = groq`
 *[_type == 'home'] | order(_updatedAt desc) [0]{
 homeImageWithText{
@@ -15,4 +15,4 @@ homeImageWithText{
     }
 }
  }
-`
+`;

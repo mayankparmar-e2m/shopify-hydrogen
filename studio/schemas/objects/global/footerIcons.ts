@@ -11,15 +11,15 @@ export default defineField({
   fields: [
     // Links
     defineField({
-        name: 'image',
-        title: 'Image',
-        type: 'image',
-        options: {hotspot: true},
+      name: 'image',
+      title: 'Image',
+      type: 'image',
+      options: {hotspot: true},
     }),
     defineField({
-        name:"altText",
-        title:"Alt Text",
-        type:"string"
+      name: 'altText',
+      title: 'Alt Text',
+      type: 'string',
     }),
   ],
 })

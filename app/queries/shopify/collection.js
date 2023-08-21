@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const COLLECTIONS_QUERY = gql`
   fragment Collection on Collection {
@@ -22,9 +22,9 @@ export const COLLECTIONS_QUERY = gql`
     $startCursor: String
   ) @inContext(country: $country, language: $language) {
     collections(
-      first: $first,
-      last: $last,
-      before: $startCursor,
+      first: $first
+      last: $last
+      before: $startCursor
       after: $endCursor
     ) {
       nodes {

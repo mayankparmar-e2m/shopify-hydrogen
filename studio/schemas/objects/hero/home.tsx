@@ -4,9 +4,9 @@ export default defineField({
   name: 'hero.home',
   title: 'Home hero',
   type: 'array',
-  of:[
-   {
-    type:"hero_section"
-   }
-  ]
+  of: [
+    {
+      type: 'hero_section',
+    },
+  ],
 })

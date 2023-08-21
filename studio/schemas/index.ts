@@ -91,7 +91,7 @@ import footerIcons from './objects/global/footerIcons'
 import fearureCollection from './objects/global/fearureCollection'
 import featureCollectionObj from './objects/global/featureCollectionObj'
 import collectionList from './objects/global/collectionList'
-import whoweAre from './objects/global/whoweAre';
+import whoweAre from './objects/global/whoweAre'
 import imageWithText from './objects/global/imageWithText'
 const objects = [
   imageWithText,
@@ -152,7 +152,7 @@ const objects = [
   brandInformationFooter,
   //footerIcons image
   footerIcons,
-  herosection
+  herosection,
 ]
 
 export const schemaTypes = [...annotations, ...singletons, ...objects, ...blocks, ...documents]

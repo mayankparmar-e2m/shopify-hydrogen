@@ -1,10 +1,10 @@
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import {Swiper, SwiperSlide} from 'swiper/react';
 // import required modules
-import { Pagination } from 'swiper/modules';
+import {Pagination} from 'swiper/modules';
 import SanityImage from '~/components/global/SanityImage';
 import SanityLink from '~/components/global/SanityLinks';
-export default function HomeHeroSlider({ heroSlider }) {
+export default function HomeHeroSlider({heroSlider}) {
   return (
     <section id="shopify-section-temmplate-home_slider">
       <Swiper
@@ -17,7 +17,7 @@ export default function HomeHeroSlider({ heroSlider }) {
         loop={true}
       >
         {heroSlider.map((slider, index) => {
-          const { links } = slider;
+          const {links} = slider;
           const btnLabel = links.title;
           return (
             <SwiperSlide key={index}>
@@ -29,14 +29,14 @@ export default function HomeHeroSlider({ heroSlider }) {
                     className="h-full hidden md:block"
                     layout="responsive"
                     loading="eager"
-                    decoding={"sync"}
+                    decoding={'sync'}
                   />
                   <SanityImage
                     src={slider.mob_image.asset._ref}
                     alt={'home banner image'}
                     className="h-full block md:hidden"
                     loading="eager"
-                    decoding={"sync"}
+                    decoding={'sync'}
                   />
                 </div>
                 <div

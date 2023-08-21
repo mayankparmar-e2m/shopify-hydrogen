@@ -1,14 +1,13 @@
-import { Navigation } from 'swiper/modules';
-import { SliderNextIcon, SliderPrevIcon } from './Icons';
-import { Swiper, SwiperSlide } from 'swiper/react';
-export default function Slider({ children, slides, key }) {
+import {Navigation} from 'swiper/modules';
+import {SliderNextIcon, SliderPrevIcon} from './Icons';
+import {Swiper, SwiperSlide} from 'swiper/react';
+export default function Slider({children, slides, key}) {
   return (
     <>
-      <div id={`prev-slide`} >
+      <div id={`prev-slide`}>
         <SliderPrevIcon />
       </div>
       <Swiper
-
         slidesPerView={1.5}
         loop={true}
         centeredSlides={true}
@@ -27,23 +26,17 @@ export default function Slider({ children, slides, key }) {
             slidesPerView: 4,
             centeredSlides: false,
             loop: true,
-            loopedSlides: 50
+            loopedSlides: 50,
           },
         }}
       >
-
         {slides.map((product) => {
-          return (
-            <SwiperSlide key={product.id}>
-              {children}
-            </SwiperSlide>
-          );
+          return <SwiperSlide key={product.id}>{children}</SwiperSlide>;
         })}
-
       </Swiper>
-      <div id={`next-slide`}  >
+      <div id={`next-slide`}>
         <SliderNextIcon />
       </div>
     </>
-  )
+  );
 }
