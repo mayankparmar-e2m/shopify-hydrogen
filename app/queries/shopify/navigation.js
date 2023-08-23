@@ -15,6 +15,7 @@ export const NAVIGATION_QUERY = gql`
     $headerMenuHandle: String!
   ) @inContext(language: $language, country: $country) {
     shop {
+      name
       primaryDomain {
         url
       }

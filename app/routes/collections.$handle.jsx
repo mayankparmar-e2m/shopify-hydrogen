@@ -1,6 +1,6 @@
 import {defer, json, redirect} from '@shopify/remix-oxygen';
 import {useLoaderData, Link, Await} from '@remix-run/react';
-import {Pagination, getPaginationVariables} from '@shopify/hydrogen';
+import {Pagination, flattenConnection, getPaginationVariables} from '@shopify/hydrogen';
 import ProductSnipet from '~/components/global/ProductSnipet';
 import SortBy from '~/components/pages/collection/SortBy';
 import {getSortValuesFromParam, overFlowHidden} from '~/utils/utils';
@@ -10,21 +10,22 @@ import gql from 'graphql-tag';
 import {COLLECTION_HERO_IMAGE} from '~/queries/sanity/sections/collection/heroSection';
 import HeroImage from '~/components/global/HeroImage';
 
-export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data.collection.title} Collection`}];
+export const meta = ({collectionHeroSection,matches}) => {
+  return [{title: `${matches[0].data.header.data.shop.name} | ${collectionHeroSection?.title ?collectionHeroSection?.title:'' } Collection`}];
 };
 
 export async function loader({request, params, context}) {
   const {handle} = params;
+  if (!handle) {
+    return redirect('/collections');
+  }
   const {apollo, sanity} = context;
   const searchParams = new URL(request.url).searchParams;
   const {sortKey, reverse} = getSortValuesFromParam(searchParams.get('sort'));
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
-  if (!handle) {
-    return redirect('/collections');
-  }
+ 
   const filters = []; // filter array value for graphql api input
   const appliedFilters = []; // applied fiters
 
@@ -122,7 +123,7 @@ export default function Collection() {
         <Await resolve={collection}>
           {({data}) => {
             const collection = data.collection;
-            const {products} = collection;
+            const products=flattenConnection(collection?.products || [])
             return (
               <>
                 <div className="collection-filter-wrapper  py-4 md:py-8  border-b border-solid border-primary mb-12">

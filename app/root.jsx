@@ -3,7 +3,7 @@ import {
   useMatches,
   useRouteError,
 } from '@remix-run/react';
-import {defer} from '@shopify/remix-oxygen';
+import { defer } from '@shopify/remix-oxygen';
 import {
   Links,
   Meta,
@@ -12,20 +12,20 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react';
-import favicon from '../public/favicon.svg';
+import favicon from '../public/favicon.png';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
-import {Layout} from '~/components/Layout';
+import { Layout } from '~/components/Layout';
 import tailwindCss from './styles/tailwind.css';
-import {NAVIGATION_QUERY} from './queries/shopify/navigation';
-import {SANITY_HEADER_QUERY} from './queries/sanity/header';
-import {SANITY_FOOTER_QUERY} from './queries/sanity/footer';
+import { NAVIGATION_QUERY } from './queries/shopify/navigation';
+import { SANITY_HEADER_QUERY } from './queries/sanity/header';
+import { SANITY_FOOTER_QUERY } from './queries/sanity/footer';
 
 export function links() {
   return [
-    {rel: 'stylesheet', href: tailwindCss},
-    {rel: 'stylesheet', href: resetStyles},
-    {rel: 'stylesheet', href: appStyles},
+    { rel: 'stylesheet', href: tailwindCss },
+    { rel: 'stylesheet', href: resetStyles },
+    { rel: 'stylesheet', href: appStyles },
     {
       rel: 'preconnect',
       href: 'https://fonts.googleapis.com',
@@ -46,16 +46,16 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    { rel: 'icon', type: 'image/png', href: favicon },
   ];
 }
 
-export async function loader({context}) {
-  const {storefront, session, cart, apollo, sanity} = context;
+export async function loader({ context }) {
+  const { storefront, session, cart, apollo, sanity } = context;
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
   // validate the customer access token is valid
-  const {isLoggedIn, headers} = await validateCustomerAccessToken(
+  const { isLoggedIn, headers } = await validateCustomerAccessToken(
     customerAccessToken,
     session,
   );
@@ -76,7 +76,7 @@ export async function loader({context}) {
   });
   // footer QUERY
   const siteFooter = Promise.all([
-    sanity.query({query: SANITY_FOOTER_QUERY}),
+    sanity.query({ query: SANITY_FOOTER_QUERY }),
     apollo.query({
       cache: storefront.CacheLong(),
       query: NAVIGATION_QUERY,
@@ -98,7 +98,7 @@ export async function loader({context}) {
       siteFooter, // shopify shop footer query
       publicStoreDomain,
     },
-    {headers},
+    { headers },
   );
 }
 
@@ -165,7 +165,7 @@ async function validateCustomerAccessToken(customerAccessToken, session) {
   let isLoggedIn = false;
   const headers = new Headers();
   if (!customerAccessToken?.accessToken || !customerAccessToken?.expiresAt) {
-    return {isLoggedIn, headers};
+    return { isLoggedIn, headers };
   }
   const expiresAt = new Date(customerAccessToken.expiresAt);
   const dateNow = new Date();
@@ -177,5 +177,5 @@ async function validateCustomerAccessToken(customerAccessToken, session) {
     isLoggedIn = true;
   }
 
-  return {isLoggedIn, headers};
+  return { isLoggedIn, headers };
 }

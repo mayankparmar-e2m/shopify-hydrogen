@@ -1,8 +1,12 @@
-import {useLoaderData, Link} from '@remix-run/react';
+import {useLoaderData} from '@remix-run/react';
 import {json} from '@shopify/remix-oxygen';
-import {Pagination, getPaginationVariables, Image} from '@shopify/hydrogen';
+import {Pagination, getPaginationVariables} from '@shopify/hydrogen';
 import {CollectionsGrid} from '~/components/pages/collection/CollectionsGrid';
 import {COLLECTIONS_QUERY} from '~/queries/shopify/collection';
+export const meta = ({matches}) => {
+  const title=matches[0]?.data?.header?.data?.shop?.name 
+  return [{title: `${title} | Collections`}];
+};
 
 export async function loader({context, request}) {
   const {apollo} = context;

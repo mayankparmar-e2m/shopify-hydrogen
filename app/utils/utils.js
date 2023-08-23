@@ -228,3 +228,27 @@ export const generateFilterUrlFromSelectedFilters = (
     return {selectedFilters, url: generateFilterUrl(selectedFilters)};
   }
 };
+
+export const handleize = (e) => {
+  try {
+    return e
+      .toLowerCase()
+      .replace(/[^\w\u00C0-\u024f]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  } catch (error) {
+    console.log('THIS VALUE IS CAUSING ERROR: ', e);
+  }
+};
+
+export const removeDuplicatesObjFromArray = (arr, key) => {
+  const uniqueArray = [];
+  const uniqueObj = {};
+  for (let index = 0; index < arr.length; index++) {
+    const objKey = arr[index][key];
+    uniqueObj[objKey] = arr[index];
+  }
+  for (let i in uniqueObj) {
+    uniqueArray.push(uniqueObj[i]);
+  }
+  return uniqueArray;
+};
